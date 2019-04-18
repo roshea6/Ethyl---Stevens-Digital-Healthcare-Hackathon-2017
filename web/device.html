@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>User Profile</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- Custom styles for this template -->
+    <link href="css/device.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">The Ethyl Wearable Recovery Device</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Your Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Your Groups</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Your Support</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="content-section-a">
+      <div class="container">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+              <h4 class="modal-title" id="myModalLabel">Sharan's Profile</h4>
+            </div>
+            <div class="modal-body">
+              <center>
+                <img src="img/sharan.jpg" name="aboutme" width="140" height="140" border="0" class="img-circle"></a>
+                <h3 class="media-heading">Sharan Juangphanich <small>USA</small></h3>
+                <span><strong>Acheivements: </strong></span><br>
+                <span class="label label-warning">2 Months+</span> <br>
+                <span class="label label-info">Helped 10+ people</span> <br>
+                <span class="label label-info">Active member of AA</span> <br>
+              </center>
+              <hr>
+              <center>
+                  Hi, I'm hoping to be free from the control of alcohol because my family is important to me.</p>
+                <br>
+              </center>
+              <br>
+              <h4> Status </h4>
+              Ambient Alcohol Reading: <span id="ambient_eval"></span>  <span id="ambient_val"></span><br>
+              Device removed: <span id="device_removed"></span><br>
+              Last breath update: <span id="breath_time"></span><br>
+              Last breath reading: <span id="breath_eval"></span><span id="breath_val"></span><br>
+          </div>
+          <div class="modal-footer">
+            <center>
+              <button type="button" class="btn btn-default" data-dismiss="modal">Support Sharan</button>
+            </center>
+          </div>
+        </div>
+      </div>
+    </div>
+      <!-- /.container -->
+    </section>
+    <!-- /.content-section-a -->
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <!--
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a href="#">Home</a>
+          </li>
+          <li class="footer-menu-divider list-inline-item">&sdot;</li>
+          <li class="list-inline-item">
+            <a href="#about">About</a>
+          </li>
+          <li class="footer-menu-divider list-inline-item">&sdot;</li>
+          <li class="list-inline-item">
+            <a href="#services">Services</a>
+          </li>
+          <li class="footer-menu-divider list-inline-item">&sdot;</li>
+          <li class="list-inline-item">
+            <a href="#contact">Contact</a>
+          </li>
+        </ul>
+        -->
+        <p class="copyright text-muted small">Copyright &copy; Community Solutions 2017. All Rights Reserved</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/popper/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      setInterval(function() {
+        $.ajax({
+              url: "https://io.adafruit.com/api/v2/happyface/feeds/alcohol-sensor",
+              type: "GET",
+              success: function (data) {
+                if (data.last_value < 500) {
+                  $('#ambient_eval').html('LOW  ');
+                } else {
+                  $('#ambient_eval').html('HIGH  ');
+                }
+                $('#ambient_val').html(data.last_value);
+              }
+          });
+      }, 1000 * 3);
+      setInterval(function() {
+        $.ajax({
+              url: "https://io.adafruit.com/api/v2/happyface/feeds/breath-sensor",
+              type: "GET",
+              success: function (data) {
+                if (data.last_value < 500) {
+                  $('#breath_eval').html('LOW  ');
+                } else {
+                  $('#breath_eval').html('HIGH  ');
+                }
+                $('#breath_time').html(data.updated_at);
+                $('#breath_val').html(data.last_value);
+              }
+          });
+      }, 1000 * 3);
+      setInterval(function() {
+        $.ajax({
+              url: "https://io.adafruit.com/api/v2/happyface/feeds/removed-sensor",
+              type: "GET",
+              success: function (data) {
+                if (data.last_value == 0) {
+                  $('#device_removed').html('YES, DEVICE REMOVED');
+                } else {
+                  $('#device_removed').html('NO, NOT REMOVED');
+                }
+                console.log(data);
+              }
+          });
+      }, 1000 * 7);
+    </script>
+  </body>
+
+</html>
